@@ -1,0 +1,6 @@
+builds/*
+.rvmrc
+packages/*
+secrets.tar
+docker-token
+railsexpress-key
