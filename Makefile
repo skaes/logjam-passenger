@@ -26,6 +26,8 @@ publish: publish-bionic publish-xenial
 
 publish-bionic:
 	rsync -vrlptDz -e "ssh -l $(LOGJAM_PACKAGE_USER)" packages/ubuntu/bionic/* $(LOGJAM_PACKAGE_HOST):/var/www/packages/ubuntu/bionic/
+	ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) make -C /var/www/packages/ubuntu/bionic
 
 publish-xenial:
 	rsync -vrlptDz -e "ssh -l $(LOGJAM_PACKAGE_USER)" packages/ubuntu/xenial/* $(LOGJAM_PACKAGE_HOST):/var/www/packages/ubuntu/xenial/
+	ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) make -C /var/www/packages/ubuntu/xenial
