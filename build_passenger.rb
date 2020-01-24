@@ -1,6 +1,8 @@
 name "logjam-passenger"
-version "0.6"
-iteration "11"
+
+v, i = File.read(File.expand_path(__dir__)+"/VERSION").chomp.split('-')
+version v
+iteration i
 
 vendor "skaes@railsexpress.de"
 
