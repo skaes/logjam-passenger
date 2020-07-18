@@ -15,9 +15,11 @@ before_install:
 - tar xvf secrets.tar
 jobs:
   include:
-    - script:
+    - name: bionic
+      script:
         - docker pull ubuntu:bionic
         - make package-bionic publish-bionic
-    - script:
+    - name: xenial
+      script:
         - docker pull ubuntu:xenial
         - make package-xenial publish-xenial
