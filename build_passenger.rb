@@ -1,6 +1,9 @@
 name "logjam-passenger"
 
-v, i = File.read(File.expand_path(__dir__)+"/VERSION").chomp.split('-')
+require 'yaml'
+versions = YAML::load_file(File.expand_path(__dir__)+"/versions.yml")
+
+v, i = versions["package"].split('-')
 version v
 iteration i
 
@@ -43,10 +46,10 @@ add "install-passenger-apache2-module.sh", ".install-passenger-apache2-module.sh
 add "minify-passenger-install.sh", ".minify-passenger-install.sh"
 add "passenger.load", ".passenger.load"
 
-run "/opt/logjam/bin/gem", "install", "passenger", "-v", "6.0.4"
+run "/opt/logjam/bin/gem", "install", "passenger", "-v", versions["passenger"]
 run "./.install-passenger-nginx-module.sh"
 run "./.install-passenger-apache2-module.sh"
-run "./.minify-passenger-install.sh"
+run "./.minify-passenger-install.sh", versions["passenger"]
 
 run "cp", ".passenger.load", "/etc/apache2/mods-available/passenger.load"
 run "chmod", "644", "/etc/apache2/mods-available/passenger.load"
