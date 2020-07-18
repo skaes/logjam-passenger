@@ -12,7 +12,7 @@ PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
 PACKAGES:=package-bionic package-xenial
 .PHONY: packages $(PACKAGES)
 
-passenger.load: passenger.load.in VERSION
+passenger.load: passenger.load.in versions.yml
 	sed -e "s/PASSENGER_VERSION/$(PASSENGER_VERSION)/g" $< >$@
 
 packages: $(PACKAGES)
