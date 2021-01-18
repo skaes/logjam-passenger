@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/logjam/lib/ruby/gems/2.7.0/gems/passenger-$1
+cd /opt/logjam/lib/ruby/gems/3.0.0/gems/passenger-$1
 rm -rf download_cache debian.template doc dev ext boost packaging man test
 find . -name '*.[hc]' -o -name '*.[hc]pp' | xargs rm
 find . -name '*.[oa]' -o -name '*.l[oa]' -o -name '*.lai'  | xargs rm
