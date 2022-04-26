@@ -32,7 +32,7 @@ build_depends "libyaml-dev"
 build_depends "pkg-config"
 build_depends "zlib1g-dev"
 
-depends "logjam-ruby", ">= 3.1.1"
+depends "logjam-ruby", ">= 3.1.2"
 depends "apache2"
 if codename == "trusty"
   depends "apache2-mpm-worker"
