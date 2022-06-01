@@ -18,15 +18,17 @@ passenger.load: passenger.load.in versions.yml
 
 packages: $(PACKAGES)
 
+define build-package
+  RUBYOPT='-W0' bundle exec fpm-fry cook --update=always ubuntu:$(1) build_passenger.rb
+  mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
+endef
+
 package-focal: passenger.load
-	bundle exec fpm-fry cook --update=always ubuntu:focal build_passenger.rb
-	mkdir -p packages/ubuntu/focal && mv *.deb packages/ubuntu/focal
+	$(call build-package,focal)
 package-bionic: passenger.load
-	bundle exec fpm-fry cook --update=always ubuntu:bionic build_passenger.rb
-	mkdir -p packages/ubuntu/bionic && mv *.deb packages/ubuntu/bionic
+	$(call build-package,bionic)
 package-xenial: passenger.load
-	bundle exec fpm-fry cook --update=always ubuntu:xenial build_passenger.rb
-	mkdir -p packages/ubuntu/xenial && mv *.deb packages/ubuntu/xenial
+	$(call build-package,xenial)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
