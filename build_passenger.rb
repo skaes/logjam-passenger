@@ -53,3 +53,7 @@ run "./.minify-passenger-install.sh", versions["passenger"]
 
 run "cp", ".passenger.load", "/etc/apache2/mods-available/passenger.load"
 run "chmod", "644", "/etc/apache2/mods-available/passenger.load"
+
+# When running in a tty, tzdata asks for the time zone and the next
+# line fixes that problem.
+plugin "env", "DEBIAN_FRONTEND" => "noninteractive"
