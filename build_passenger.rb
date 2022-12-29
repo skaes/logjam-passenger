@@ -3,6 +3,9 @@ name "logjam-passenger"
 require 'yaml'
 versions = YAML::load_file(File.expand_path(__dir__)+"/versions.yml")
 
+ruby_version = versions["ruby"]
+ruby_lib_version = (ruby_version.split(".")[0..1] << "0").join('.')
+
 v, i = versions["package"].split('-')
 version v
 iteration i
@@ -13,12 +16,7 @@ build_depends "build-essential"
 build_depends "curl"
 build_depends "git"
 build_depends "nodejs"
-
-if codename == "trusty"
-  build_depends "apache2-threaded-dev"
-else
-  build_depends "apache2-dev"
-end
+build_depends "apache2-dev"
 build_depends "libapr1-dev"
 build_depends "libcurl4-openssl-dev"
 build_depends "libffi-dev"
@@ -32,24 +30,23 @@ build_depends "libyaml-dev"
 build_depends "pkg-config"
 build_depends "zlib1g-dev"
 
-depends "logjam-ruby", ">= 3.1.3"
+depends "logjam-ruby", ">= #{ruby_version}"
 depends "apache2"
-if codename == "trusty"
-  depends "apache2-mpm-worker"
-end
 
 apt_setup "apt-get update -y && apt-get install apt-transport-https ca-certificates -y"
 apt_setup "echo 'deb [trusted=yes] https://railsexpress.de/packages/ubuntu/#{codename} ./' >> /etc/apt/sources.list"
 
+add "patch-passenger-for-ruby-3.2.sh", ".patch-passenger-for-ruby-3.2.sh"
 add "install-passenger-nginx-module.sh", ".install-passenger-nginx-module.sh"
 add "install-passenger-apache2-module.sh", ".install-passenger-apache2-module.sh"
 add "minify-passenger-install.sh", ".minify-passenger-install.sh"
 add "passenger.load", ".passenger.load"
 
 run "/opt/logjam/bin/gem", "install", "passenger", "-v", versions["passenger"]
+run "./.patch-passenger-for-ruby-3.2.sh", versions["passenger"], ruby_lib_version
 run "./.install-passenger-nginx-module.sh"
 run "./.install-passenger-apache2-module.sh"
-run "./.minify-passenger-install.sh", versions["passenger"]
+run "./.minify-passenger-install.sh", versions["passenger"], ruby_lib_version
 
 run "cp", ".passenger.load", "/etc/apache2/mods-available/passenger.load"
 run "chmod", "644", "/etc/apache2/mods-available/passenger.load"

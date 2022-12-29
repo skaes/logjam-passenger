@@ -10,7 +10,7 @@ clean:
 VERSION:=$(shell awk '/package:/ {print $$2};' versions.yml)
 PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
 
-PACKAGES:=package-focal package-bionic package-xenial
+PACKAGES:=package-bionic package-focal package-jammy
 .PHONY: packages $(PACKAGES)
 
 passenger.load: passenger.load.in versions.yml
@@ -23,18 +23,18 @@ define build-package
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-focal: passenger.load
-	$(call build-package,focal)
 package-bionic: passenger.load
 	$(call build-package,bionic)
-package-xenial: passenger.load
-	$(call build-package,xenial)
+package-focal: passenger.load
+	$(call build-package,focal)
+package-jammy: passenger.load
+	$(call build-package,jammy)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-focal publish-bionic publish-xenial
-publish: publish-focal publish-bionic publish-xenial
+.PHONY: publish publish-bionic publish-focal publish-jammy
+publish: publish-bionic publish-focal publish-jammy
 
 PACKAGE_NAME:=logjam-passenger_$(VERSION)_amd64.deb
 
@@ -48,11 +48,9 @@ else\
 fi
 endef
 
-publish-focal:
-	$(call upload-package,focal,$(PACKAGE_NAME))
-
 publish-bionic:
 	$(call upload-package,bionic,$(PACKAGE_NAME))
-
-publish-xenial:
-	$(call upload-package,xenial,$(PACKAGE_NAME))
+publish-focal:
+	$(call upload-package,focal,$(PACKAGE_NAME))
+publish-jammy:
+	$(call upload-package,jammy,$(PACKAGE_NAME))
