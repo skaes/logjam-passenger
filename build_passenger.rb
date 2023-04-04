@@ -36,14 +36,12 @@ depends "apache2"
 apt_setup "apt-get update -y && apt-get install apt-transport-https ca-certificates -y"
 apt_setup "echo 'deb [trusted=yes] https://railsexpress.de/packages/ubuntu/#{codename} ./' >> /etc/apt/sources.list"
 
-add "patch-passenger-for-ruby-3.2.sh", ".patch-passenger-for-ruby-3.2.sh"
 add "install-passenger-nginx-module.sh", ".install-passenger-nginx-module.sh"
 add "install-passenger-apache2-module.sh", ".install-passenger-apache2-module.sh"
 add "minify-passenger-install.sh", ".minify-passenger-install.sh"
 add "passenger.load", ".passenger.load"
 
 run "/opt/logjam/bin/gem", "install", "passenger", "-v", versions["passenger"]
-run "./.patch-passenger-for-ruby-3.2.sh", versions["passenger"], ruby_lib_version
 run "./.install-passenger-nginx-module.sh"
 run "./.install-passenger-apache2-module.sh"
 run "./.minify-passenger-install.sh", versions["passenger"], ruby_lib_version
