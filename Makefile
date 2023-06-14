@@ -11,15 +11,35 @@ VERSION:=$(shell awk '/package:/ {print $$2};' versions.yml)
 PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
 
 PACKAGES:=package-bionic package-focal package-jammy
-.PHONY: packages $(PACKAGES)
+.PHONY: packages $(PACKAGES) pull pull-jammy pull-focal pull-bionic
+
+ARCH := amd64
+
+ifeq ($(ARCH),)
+PLATFORM :=
+LIBARCH :=
+else
+PLATFORM := --platform $(ARCH)
+LIBARCH := $(ARCH:arm64=arm64v8)/
+endif
+
 
 passenger.load: passenger.load.in versions.yml
 	sed -e "s/PASSENGER_VERSION/$(PASSENGER_VERSION)/g" $< >$@
 
 packages: $(PACKAGES)
 
+pull: pull-jammy pull-focal pull-bionic
+
+pull-jammy:
+	docker pull $(LIBARCH)ubuntu:jammy
+pull-focal:
+	docker pull $(LIBARCH)ubuntu:focal
+pull-bionic:
+	docker pull $(LIBARCH)ubuntu:bionic
+
 define build-package
-  RUBYOPT='-W0' bundle exec fpm-fry cook --update=always ubuntu:$(1) build_passenger.rb
+  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1) build_passenger.rb
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
@@ -36,7 +56,7 @@ LOGJAM_PACKAGE_USER:=uploader
 .PHONY: publish publish-bionic publish-focal publish-jammy
 publish: publish-bionic publish-focal publish-jammy
 
-PACKAGE_NAME:=logjam-passenger_$(VERSION)_amd64.deb
+PACKAGE_NAME:=logjam-passenger_$(VERSION)_$(ARCH).deb
 
 define upload-package
 @if ssh $(LOGJAM_PACKAGE_USER)@$(LOGJAM_PACKAGE_HOST) debian-package-exists $(1) $(2); then\
