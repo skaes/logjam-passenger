@@ -29,6 +29,7 @@ build_depends "libtool"
 build_depends "libyaml-dev"
 build_depends "pkg-config"
 build_depends "zlib1g-dev"
+build_depends "libpcre3-dev"
 
 depends "logjam-ruby", ">= #{ruby_version}"
 depends "apache2"
