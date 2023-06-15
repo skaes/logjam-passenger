@@ -16,7 +16,7 @@ GEM
       pleaserun (~> 0.0.29)
       rexml
       stud
-    fpm-fry (0.7.0)
+    fpm-fry (0.7.1)
       excon (~> 0.71)
       fpm (~> 1.13)
     insist (1.0.0)
