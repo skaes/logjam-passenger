@@ -74,3 +74,7 @@ publish-focal:
 	$(call upload-package,focal,$(PACKAGE_NAME))
 publish-jammy:
 	$(call upload-package,jammy,$(PACKAGE_NAME))
+
+show-jammy:
+	docker run --rm -it -v `pwd`/packages/ubuntu/jammy:/src ubuntu:jammy bash -c 'dpkg -I /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
+	docker run --rm -it -v `pwd`/packages/ubuntu/jammy:/src ubuntu:jammy bash -c 'dpkg -c /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
