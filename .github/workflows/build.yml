@@ -53,5 +53,5 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
       - name: Upload the package
-        run: make publish-${{ matrix.os }}
+        run: make publish-${{ matrix.os }} ARCH=${{ matrix.arch }}
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
