@@ -7,7 +7,7 @@ GEM
     cabin (0.9.0)
     clamp (1.0.1)
     dotenv (2.8.1)
-    excon (0.100.0)
+    excon (0.109.0)
     fpm (1.15.1)
       arr-pm (~> 0.0.11)
       backports (>= 2.6.2)
@@ -28,8 +28,8 @@ GEM
       insist
       mustache (= 0.99.8)
       stud
-    rake (13.0.6)
-    rexml (3.2.5)
+    rake (13.1.0)
+    rexml (3.2.6)
     stud (0.0.23)
 
 PLATFORMS
