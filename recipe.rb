@@ -45,6 +45,10 @@ add "minify-passenger-install.sh", ".minify-passenger-install.sh"
 add "passenger.load", ".passenger.load"
 
 run "/opt/logjam/bin/gem", "install", "passenger", "-v", versions["passenger"]
+
+# run "/opt/logjam/bin/gem", "env"
+# run "/opt/logjam/bin/gem", "list"
+
 run "./.install-passenger-standalone.sh"
 run "./.install-passenger-nginx-module.sh"
 run "./.install-passenger-apache2-module.sh"
@@ -56,3 +60,7 @@ run "chmod", "644", "/etc/apache2/mods-available/passenger.load"
 # When running in a tty, tzdata asks for the time zone and the next
 # line fixes that problem.
 plugin "env", "DEBIAN_FRONTEND" => "noninteractive"
+
+plugin "exclude"
+exclude "/root"
+exclude "/root/**"
