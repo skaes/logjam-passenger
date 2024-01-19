@@ -39,7 +39,7 @@ pull-bionic:
 	docker pull $(LIBARCH)ubuntu:bionic
 
 define build-package
-  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1) build_passenger.rb
+  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1) recipe.rb
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
