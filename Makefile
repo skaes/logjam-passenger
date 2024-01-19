@@ -9,6 +9,8 @@ clean:
 
 VERSION:=$(shell awk '/package:/ {print $$2};' versions.yml)
 PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
+RUBY_VERSION := $(shell awk '/ruby:/ {print $$2};' versions.yml)
+RUBY_API_VERSION := $(shell awk '/ruby:/ {split($$2, a, "."); printf("%s.%s.0", a[1], a[2]);}' versions.yml)
 
 PACKAGES:=package-bionic package-focal package-jammy
 .PHONY: packages $(PACKAGES) pull pull-jammy pull-focal pull-bionic
@@ -25,7 +27,7 @@ endif
 
 
 passenger.load: passenger.load.in versions.yml
-	sed -e "s/PASSENGER_VERSION/$(PASSENGER_VERSION)/g" $< >$@
+	sed -e "s/PASSENGER_VERSION/$(PASSENGER_VERSION)/g" -e "s/RUBY_VERSION/$(RUBY_VERSION)/g"  -e "s/RUBY_API_VERSION/$(RUBY_API_VERSION)/g" $< >$@
 
 packages: $(PACKAGES)
 
