@@ -12,8 +12,8 @@ PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
 RUBY_VERSION := $(shell awk '/ruby:/ {print $$2};' versions.yml)
 RUBY_API_VERSION := $(shell awk '/ruby:/ {split($$2, a, "."); printf("%s.%s.0", a[1], a[2]);}' versions.yml)
 
-PACKAGES:=package-bionic package-focal package-jammy
-.PHONY: packages $(PACKAGES) pull pull-jammy pull-focal pull-bionic
+PACKAGES:=package-focal package-jammy
+.PHONY: packages $(PACKAGES)
 
 ARCH := amd64
 
@@ -31,22 +31,11 @@ passenger.load: passenger.load.in versions.yml
 
 packages: $(PACKAGES)
 
-pull: pull-jammy pull-focal pull-bionic
-
-pull-jammy:
-	docker pull $(LIBARCH)ubuntu:jammy
-pull-focal:
-	docker pull $(LIBARCH)ubuntu:focal
-pull-bionic:
-	docker pull $(LIBARCH)ubuntu:bionic
-
 define build-package
-  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --update=always $(LIBARCH)ubuntu:$(1) recipe.rb
+  RUBYOPT='-W0' bundle exec fpm-fry cook $(PLATFORM) --pull --update=always $(LIBARCH)ubuntu:$(1) recipe.rb
   mkdir -p packages/ubuntu/$(1) && mv *.deb packages/ubuntu/$(1)
 endef
 
-package-bionic: passenger.load
-	$(call build-package,bionic)
 package-focal: passenger.load
 	$(call build-package,focal)
 package-jammy: passenger.load
@@ -55,8 +44,8 @@ package-jammy: passenger.load
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-bionic publish-focal publish-jammy
-publish: publish-bionic publish-focal publish-jammy
+.PHONY: publish publish-focal publish-jammy
+publish: publish-focal publish-jammy
 
 PACKAGE_NAME:=logjam-passenger_$(VERSION)_$(ARCH).deb
 
@@ -70,8 +59,6 @@ else\
 fi
 endef
 
-publish-bionic:
-	$(call upload-package,bionic,$(PACKAGE_NAME))
 publish-focal:
 	$(call upload-package,focal,$(PACKAGE_NAME))
 publish-jammy:

@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [bionic, focal, jammy]
+        os: [focal, jammy]
         arch: ["amd64", "arm64"]
 
     steps:
@@ -22,13 +22,10 @@ jobs:
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.2"
+          ruby-version: "3.2.3"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-
-      - name: Pull base image
-        run: make pull-${{ matrix.os }} ARCH=${{ matrix.arch }}
 
       - name: Install gems
         run: bundle install

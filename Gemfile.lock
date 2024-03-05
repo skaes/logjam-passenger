@@ -6,7 +6,7 @@ GEM
     backports (3.24.1)
     cabin (0.9.0)
     clamp (1.0.1)
-    dotenv (2.8.1)
+    dotenv (3.1.0)
     excon (0.109.0)
     fpm (1.15.1)
       arr-pm (~> 0.0.11)
@@ -16,7 +16,7 @@ GEM
       pleaserun (~> 0.0.29)
       rexml
       stud
-    fpm-fry (0.7.1)
+    fpm-fry (0.7.2.1)
       excon (~> 0.71)
       fpm (~> 1.13)
     insist (1.0.0)
