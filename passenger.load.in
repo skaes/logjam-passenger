@@ -1,4 +1,4 @@
-LoadModule passenger_module /opt/logjam/lib/ruby/gems/RUBY_VERSION/gems/passenger-PASSENGER_VERSION/buildout/apache2/mod_passenger.so
+LoadModule passenger_module /opt/logjam/lib/ruby/gems/RUBY_API_VERSION/gems/passenger-PASSENGER_VERSION/buildout/apache2/mod_passenger.so
 <IfModule mod_passenger.c>
    PassengerRoot /opt/logjam/lib/ruby/gems/RUBY_API_VERSION/gems/passenger-PASSENGER_VERSION
    PassengerDefaultRuby /opt/logjam/bin/ruby
