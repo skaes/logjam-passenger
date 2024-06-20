@@ -3,11 +3,11 @@ GEM
   specs:
     ansi (1.5.0)
     arr-pm (0.0.12)
-    backports (3.24.1)
+    backports (3.25.0)
     cabin (0.9.0)
     clamp (1.0.1)
-    dotenv (3.1.0)
-    excon (0.109.0)
+    dotenv (3.1.2)
+    excon (0.110.0)
     fpm (1.15.1)
       arr-pm (~> 0.0.11)
       backports (>= 2.6.2)
@@ -16,7 +16,7 @@ GEM
       pleaserun (~> 0.0.29)
       rexml
       stud
-    fpm-fry (0.7.2.1)
+    fpm-fry (0.7.3)
       excon (~> 0.71)
       fpm (~> 1.13)
     insist (1.0.0)
@@ -28,8 +28,10 @@ GEM
       insist
       mustache (= 0.99.8)
       stud
-    rake (13.1.0)
-    rexml (3.2.6)
+    rake (13.2.1)
+    rexml (3.3.0)
+      strscan
+    strscan (3.1.0)
     stud (0.0.23)
 
 PLATFORMS
