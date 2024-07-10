@@ -12,7 +12,7 @@ PASSENGER_VERSION := $(shell awk '/passenger:/ {print $$2};' versions.yml)
 RUBY_VERSION := $(shell awk '/ruby:/ {print $$2};' versions.yml)
 RUBY_API_VERSION := $(shell awk '/ruby:/ {split($$2, a, "."); printf("%s.%s.0", a[1], a[2]);}' versions.yml)
 
-PACKAGES:=package-focal package-jammy
+PACKAGES:=package-focal package-jammy package-noble
 .PHONY: packages $(PACKAGES)
 
 ARCH := amd64
@@ -40,12 +40,14 @@ package-focal: passenger.load
 	$(call build-package,focal)
 package-jammy: passenger.load
 	$(call build-package,jammy)
+package-noble: passenger.load
+	$(call build-package,noble)
 
 LOGJAM_PACKAGE_HOST:=railsexpress.de
 LOGJAM_PACKAGE_USER:=uploader
 
-.PHONY: publish publish-focal publish-jammy
-publish: publish-focal publish-jammy
+.PHONY: publish publish-focal publish-jammy publish-noble
+publish: publish-focal publish-jammy publish-noble
 
 PACKAGE_NAME:=logjam-passenger_$(VERSION)_$(ARCH).deb
 
@@ -63,7 +65,16 @@ publish-focal:
 	$(call upload-package,focal,$(PACKAGE_NAME))
 publish-jammy:
 	$(call upload-package,jammy,$(PACKAGE_NAME))
+publish-noble:
+	$(call upload-package,noble,$(PACKAGE_NAME))
 
+.PHONY: show-focal show-jammy show-noble
+show-focal:
+	docker run --rm -it -v `pwd`/packages/ubuntu/focal:/src ubuntu:focal bash -c 'dpkg -I /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
+	docker run --rm -it -v `pwd`/packages/ubuntu/focal:/src ubuntu:focal bash -c 'dpkg -c /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
 show-jammy:
 	docker run --rm -it -v `pwd`/packages/ubuntu/jammy:/src ubuntu:jammy bash -c 'dpkg -I /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
 	docker run --rm -it -v `pwd`/packages/ubuntu/jammy:/src ubuntu:jammy bash -c 'dpkg -c /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
+show-noble:
+	docker run --rm -it -v `pwd`/packages/ubuntu/noble:/src ubuntu:noble bash -c 'dpkg -I /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
+	docker run --rm -it -v `pwd`/packages/ubuntu/noble:/src ubuntu:noble bash -c 'dpkg -c /src/logjam-passenger_$(VERSION)_$(ARCH).deb'
