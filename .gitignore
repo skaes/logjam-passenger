@@ -5,3 +5,4 @@ secrets.tar
 docker-token
 railsexpress-key
 passenger.load
+Gemfile.lock
